@@ -15,14 +15,14 @@ module.exports = {
         return result;
     },
     loadSync: (options) => {
-        const opts = [{
+        const opts = {
             options,
             fn: 'init',
             parameters: [{}]
-        }];
+        };
 
         const { stdout } = spawnSync('node', [`${__dirname}/utils/sync`], {
-            input: JSON.stringify(opts),
+            input: JSON.stringify([ opts ]),
             maxBuffer: 4000000
         });
 
