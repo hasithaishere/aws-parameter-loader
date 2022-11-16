@@ -1,0 +1,29 @@
+{
+  "name": "aws-parameter-loader",
+  "version": "1.0.0",
+  "description": "NPM module for load parameter from AWS SSM Parameter Store.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hasithaishere/aws-parmeter-loader.git"
+  },
+  "keywords": [
+    "AWS",
+    "SSM",
+    "Parameter",
+    "Parameter Store"
+  ],
+  "author": "Hasitha Gamage",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hasithaishere/aws-parmeter-loader/issues"
+  },
+  "homepage": "https://github.com/hasithaishere/aws-parmeter-loader#readme",
+  "dependencies": {
+    "@aws-sdk/client-ssm": "^3.211.0",
+    "readline": "^1.3.0"
+  }
+}
