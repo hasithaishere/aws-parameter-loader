@@ -1,8 +1,7 @@
 const readline = require('readline');
-const SSM = require('../repository/ssm');
+const SSM = require('./ssm');
 
 const handleError = (error) => {
-    console.log(error)
     const err = Object.assign({}, error, { message: error.message });
     console.log(JSON.stringify({ success: false, err }));
 }

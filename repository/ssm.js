@@ -8,7 +8,7 @@ class SSM {
         });
     }
 
-    async loadParameters(nextToken=null, parameters=[]) {
+    async loadParameters(nextToken = null, parameters = []) {
         const input = {
             Path: this.parameterBasePath,
             WithDecryption: true,
@@ -29,6 +29,13 @@ class SSM {
         }
 
         return parameters;
+    }
+
+    static loadParametersToEnv(parameters, parameterBasePath) {
+        parameters.forEach(parameter => {
+            const key = parameter.Name.replace(parameterBasePath, '');
+            process.env[key] = parameter.Value;
+        });
     }
 
     init() {
