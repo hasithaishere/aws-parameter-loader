@@ -1,5 +1,5 @@
 const readline = require('readline');
-const SSM = require('./ssm');
+const SSM = require('../repository/ssm');
 
 const handleError = (error) => {
     console.log(error)

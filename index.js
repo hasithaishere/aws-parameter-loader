@@ -21,7 +21,7 @@ module.exports = {
             parameters: [{}]
         };
 
-        const { stdout } = spawnSync('node', [`${__dirname}/utils/sync`], {
+        const { stdout } = spawnSync('node', [`${__dirname}/utils/samSync`], {
             input: JSON.stringify([ opts ]),
             maxBuffer: 4000000
         });
