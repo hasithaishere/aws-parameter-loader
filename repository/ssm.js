@@ -37,10 +37,6 @@ class SSM {
             process.env[key] = parameter.Value;
         });
     }
-
-    init() {
-        return this.loadParameters();
-    }
 }
 
 module.exports = SSM;
