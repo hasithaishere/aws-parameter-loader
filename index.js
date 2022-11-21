@@ -1,32 +1,38 @@
-const spawnSync = require('child_process').spawnSync;
 const SSM = require('./repository/ssm');
+
+const loadEnv = async (opt) => {
+    const result = await new SSM(opt).init();
+    SSM.loadParametersToEnv(result, opt.parameterBasePath);
+};
 
 module.exports = {
     load: async (options) => {
-        const result = await new SSM(options).init();
-        SSM.loadParametersToEnv(result, options.parameterBasePath);
-        return result;
-    },
-    loadSync: (options) => {
-        const opts = {
-            options,
-            fn: 'init',
-            parameters: [{}]
-        };
+        let isLoaded = false;
 
-        const { stdout } = spawnSync('node', [`${__dirname}/repository/samSync`], {
-            input: JSON.stringify([opts]),
-            maxBuffer: 4000000
-        });
+        const {
+            PARAM_PATH = null,
+            DEPLOYED_AT,
+            PARAM_LOADED_AT = null,
+            ECS_CONTAINER_METADATA_FILE = null, // Predefined AWS environment variable for ECS service
+            AWS_LAMBDA_FUNCTION_NAME = null, // Predefined AWS environment variable for Lambda
+        } = process.env;
 
-        const queryResult = JSON.parse(stdout.toString());
-
-        if (queryResult.success) {
-            const { result } = queryResult;
-            SSM.loadParametersToEnv(result, options.parameterBasePath);
-            return result;
-        } else {
-            throw new Error(queryResult.err.message || queryResult.err.code);
+        // Locally we don't set this PARAM_PATH variable, this set using Cloudformation template 
+        if (PARAM_PATH !== null) { 
+            // For ECS Services
+            if (ECS_CONTAINER_METADATA_FILE !== null) {
+                await loadEnv(options);
+                isLoaded = true;
+            }
+            
+            // For Lambda
+            if (AWS_LAMBDA_FUNCTION_NAME !== null && PARAM_LOADED_AT !== DEPLOYED_AT) {
+                await loadEnv(options);
+                process.env.PARAM_LOADED_AT = DEPLOYED_AT;
+                isLoaded = true;
+            }
         }
-    },
+
+        return isLoaded;
+    }
 };
