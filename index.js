@@ -1,7 +1,7 @@
 const SSM = require('./repository/ssm');
 
 module.exports = async (options = { CACHE_ENABLED: true }) => {
-    if (CACHE_ENABLED && process.env.PARAM_CACHED) return;
+    if (options.CACHE_ENABLED && process.env.PARAM_CACHED) return;
 
     const ssmOptions = {
         parameterBasePath: options.parameterBasePath || process.env.PARAM_PATH,
