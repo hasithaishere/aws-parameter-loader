@@ -1,12 +1,21 @@
 const SSM = require('./repository/ssm');
 
+/**
+ * Private function for loading environment variables with custom configuration options.
+ * @param {*} opt 
+ */
 const loadEnv = async (opt) => {
-    const result = await new SSM(opt).init();
-    SSM.loadParametersToEnv(result, opt.parameterBasePath);
+    const options = {
+        parameterBasePath: opt.parameterBasePath || process.env.PARAM_PATH,
+        region: opt.region || process.env.AWS_REGION
+    };
+
+    const result = await new SSM(options).init();
+    SSM.loadParametersToEnv(result, options.parameterBasePath);
 };
 
 module.exports = {
-    load: async (options) => {
+    load: async (options = {}) => {
         let isLoaded = false;
 
         const {
